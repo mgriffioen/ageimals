@@ -65,6 +65,7 @@
   }
   .head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;}
   .name{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:21px;letter-spacing:-.01em;}
+  .named-star{color:var(--amber);font-size:16px;line-height:1;}
   .species{font-size:13px;color:var(--muted);font-style:italic;}
   .tag{
     font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
@@ -129,7 +130,8 @@
   <footer>
     <h3>How this stays fresh</h3>
     <ul>
-      <li>Data lives in <code>candidates.json</code> — a small automated search tops the pool back up to 3-5 active options each week.</li>
+      <li>Data lives in <code>candidates.json</code> — a small automated search tops the pool back up to 3-5 active options each week, prioritizing animals that already have a real name (marked with a <span class="named-star">★</span>) over unnamed newborns.</li>
+      <li>Age is computed live from each animal's birth date, so it stays accurate whenever you check in — no manual updates needed.</li>
       <li>Used one? Just tell Claude in an Ageimals session, e.g. "mark the Detroit gorilla as used" — it'll flip it in <code>candidates.json</code>, commit, and push, so it won't be suggested again.</li>
       <li>This page fetches <code>candidates.json</code> at load time, so it needs to be served over http(s) (GitHub Pages, or a local static server) rather than opened directly as a <code>file://</code>.</li>
     </ul>
@@ -147,11 +149,36 @@
     return d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
   }
 
+  function computeAge(bornIso, now) {
+    const born = new Date(bornIso + 'T00:00:00');
+    if (isNaN(born) || born > now) return null;
+
+    let years = now.getFullYear() - born.getFullYear();
+    let months = now.getMonth() - born.getMonth();
+    let days = now.getDate() - born.getDate();
+    if (days < 0) {
+      months--;
+      days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
+    }
+    if (months < 0) {
+      years--;
+      months += 12;
+    }
+
+    if (years >= 1) return months > 0 ? `${years}y ${months}mo` : `${years}y`;
+    if (months >= 1) return days > 0 ? `${months}mo ${days}d` : `${months}mo`;
+    if (days >= 14) return `${Math.floor(days / 7)}wk`;
+    return `${days}d`;
+  }
+
   fetch('candidates.json')
     .then(r => r.json())
     .then(data => {
+      const now = new Date();
       const all = data.candidates || [];
-      const active = all.filter(c => !c.used);
+      const active = all
+        .filter(c => !c.used)
+        .sort((a, b) => (b.named === true) - (a.named === true));
       const used = all.filter(c => c.used);
 
       document.getElementById('poolCount').innerHTML = `<b>${active.length}</b> active option${active.length === 1 ? '' : 's'}`;
@@ -161,18 +188,22 @@
       if (active.length === 0) {
         activeList.innerHTML = '<div class="empty">No active candidates right now — the next automated refresh will top this back up.</div>';
       } else {
-        activeList.innerHTML = active.map(c => `
+        activeList.innerHTML = active.map(c => {
+          const age = computeAge(c.born, now);
+          return `
           <div class="card">
             <div class="head">
+              ${c.named ? '<span class="named-star" title="Named">★</span>' : ''}
               <span class="name">${c.name}</span>
               <span class="species">${c.species} · ${c.location}</span>
               <span class="tag ${c.suggestedDifficulty}">${DIFFICULTY_LABEL[c.suggestedDifficulty] || c.suggestedDifficulty}</span>
             </div>
-            <div class="facts">Born <b>${c.born}</b></div>
+            <div class="facts">Born <b>${c.born}</b>${age ? ` · <b>${age} old today</b>` : ''}</div>
             <div class="hook">${c.hook} <a href="${c.sourceUrl}" target="_blank">Source →</a></div>
             <div class="added">Added ${fmtDate(c.dateAdded)}</div>
           </div>
-        `).join('');
+        `;
+        }).join('');
       }
 
       const usedList = document.getElementById('usedList');
