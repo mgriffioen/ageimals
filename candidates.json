@@ -1,0 +1,58 @@
+{
+  "_comment": "Weekly candidate pool for future Ageimals rounds. Each candidate is a real animal with a cited source. 'used' animals have already been built into a round host sheet and should not be suggested again. Keep 3-5 entries with used=false at all times — top up with fresh finds when the active count drops below 3.",
+  "lastUpdated": "2026-07-17",
+  "candidates": [
+    {
+      "id": "detroit-gorilla-2026-07",
+      "name": "Unnamed gorilla calf",
+      "species": "Western lowland gorilla",
+      "location": "Detroit Zoo",
+      "born": "2026-07-12",
+      "hook": "Only the second gorilla ever born at the Detroit Zoo, to first-time mom Tulivu and dad Mshindi — half-sibling to 2024's Motema.",
+      "sourceUrl": "https://www.clickondetroit.com/news/local/2026/07/16/detroit-zoo-welcomes-newborn-baby-girl-gorilla-the-second-born-in-nearly-100-years/",
+      "suggestedDifficulty": "easy",
+      "dateAdded": "2026-07-17",
+      "used": false,
+      "usedDate": null
+    },
+    {
+      "id": "cleveland-amur-leopard-2026-07",
+      "name": "Unnamed leopard cub",
+      "species": "Amur leopard",
+      "location": "Cleveland Metroparks Zoo",
+      "born": "2026-07-01",
+      "hook": "The first Amur leopard ever born at the zoo in its 144-year history, to mom Marta and dad Sylas.",
+      "sourceUrl": "https://fox8.com/news/photos-extremely-rare-cub-born-at-cleveland-metroparks-zoo/",
+      "suggestedDifficulty": "tricky",
+      "dateAdded": "2026-07-17",
+      "used": false,
+      "usedDate": null
+    },
+    {
+      "id": "santa-barbara-red-panda-twins-2026-07",
+      "name": "Unnamed red panda twins",
+      "species": "Red panda (twins)",
+      "location": "Santa Barbara Zoo",
+      "born": "2026-07-02",
+      "hook": "First-time parents Ruby and Raj's twin cubs are the first red pandas born at the zoo since 1993.",
+      "sourceUrl": "https://www.independent.com/2026/07/08/baby-animal-alert-red-panda-cubs-born-at-santa-barbara-zoo/",
+      "suggestedDifficulty": "tricky",
+      "dateAdded": "2026-07-17",
+      "used": false,
+      "usedDate": null
+    },
+    {
+      "id": "san-antonio-francois-langur-2026-07",
+      "name": "Unnamed langur baby",
+      "species": "François' langur",
+      "location": "San Antonio Zoo",
+      "born": "2026-07 (early July, exact date TBD from source)",
+      "hook": "Born to mom Ravalina and dad Chay with the species' signature bright-orange baby fur, which fades to adult black-and-white over several months — endangered species.",
+      "sourceUrl": "https://www.kens5.com/article/news/local/san-antonio-texas-satx-zoo-methodist-healthcare-new-baby-monkey-francois-langur-july-2026/273-4dd0da3d-adfb-4cdc-a9e6-961cc5d8479e",
+      "suggestedDifficulty": "sneaky",
+      "dateAdded": "2026-07-17",
+      "used": false,
+      "usedDate": null
+    }
+  ]
+}

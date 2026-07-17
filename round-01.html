@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ageimals — Round 01 Host Sheet</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Inter:wght@400;500;600&family=Space+Mono:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F2EC;
+    --card:#FFFFFF;
+    --ink:#1C2A22;
+    --teal:#2F6F5E;
+    --amber:#E0A100;
+    --muted:#6C7A70;
+    --line:#E2DED4;
+    --easy:#2F6F5E;
+    --tricky:#C97A1B;
+    --sneaky:#B4462F;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px;margin:0 auto;padding:40px 28px 64px;}
+
+  header{border-bottom:3px solid var(--ink);padding-bottom:20px;margin-bottom:8px;}
+  .kicker{font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--teal);}
+  h1{
+    font-family:"Bricolage Grotesque",sans-serif;
+    font-weight:800;
+    font-size:clamp(42px,9vw,76px);
+    line-height:.92;
+    margin:6px 0 10px;
+    letter-spacing:-.02em;
+  }
+  h1 .dot{color:var(--amber);}
+  .sub{font-size:16px;color:var(--muted);max-width:60ch;}
+  .meta{display:flex;flex-wrap:wrap;gap:10px 22px;margin-top:16px;font-size:13px;color:var(--muted);font-family:"Space Mono",monospace;}
+  .meta b{color:var(--ink);font-weight:700;}
+
+  .controls{display:flex;gap:10px;align-items:center;margin:22px 0 26px;}
+  .toggle{
+    font-family:"Space Mono",monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;
+    background:var(--ink);color:var(--paper);border:none;border-radius:100px;padding:11px 18px;cursor:pointer;
+  }
+  .toggle:hover{background:var(--teal);}
+  .toggle-note{font-size:12px;color:var(--muted);}
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:22px 24px;
+    margin-bottom:18px;
+    display:grid;
+    grid-template-columns:56px 1fr;
+    gap:4px 20px;
+    page-break-inside:avoid;
+  }
+  .num{
+    font-family:"Bricolage Grotesque",sans-serif;font-weight:800;font-size:34px;color:var(--line);
+    line-height:1;grid-row:1 / span 3;
+  }
+  .card.easy .num{color:var(--easy);opacity:.35;}
+  .card.tricky .num{color:var(--tricky);opacity:.4;}
+  .card.sneaky .num{color:var(--sneaky);opacity:.4;}
+
+  .head{display:flex;flex-wrap:wrap;align-items:baseline;gap:8px 12px;}
+  .name{font-family:"Bricolage Grotesque",sans-serif;font-weight:700;font-size:22px;letter-spacing:-.01em;}
+  .species{font-size:13px;color:var(--muted);font-style:italic;}
+  .tag{
+    font-family:"Space Mono",monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    padding:3px 9px;border-radius:100px;color:#fff;margin-left:auto;
+  }
+  .tag.easy{background:var(--easy);}
+  .tag.tricky{background:var(--tricky);}
+  .tag.sneaky{background:var(--sneaky);}
+
+  .blurb{font-size:13.5px;color:var(--muted);margin:2px 0 12px;grid-column:2;}
+  .blurb a{color:var(--teal);text-decoration:none;border-bottom:1px solid var(--line);}
+  .blurb a:hover{border-color:var(--teal);}
+
+  .opts{grid-column:2;display:grid;grid-template-columns:repeat(4,1fr);gap:8px;}
+  .opt{
+    border:1px solid var(--line);border-radius:9px;padding:9px 8px;text-align:center;font-size:14px;
+    position:relative;
+  }
+  .opt .ltr{font-family:"Space Mono",monospace;font-size:11px;color:var(--muted);display:block;margin-bottom:2px;}
+  /* answer reveal */
+  body.show-answers .opt.correct{
+    background:var(--amber);border-color:var(--amber);color:var(--ink);font-weight:600;
+  }
+  body.show-answers .opt.correct .ltr{color:#7a5a00;}
+  body.show-answers .opt.correct::after{
+    content:"✓";position:absolute;top:-8px;right:-6px;background:var(--ink);color:#fff;
+    width:18px;height:18px;border-radius:50%;font-size:11px;line-height:18px;
+  }
+  .answerline{grid-column:2;margin-top:10px;font-size:12.5px;color:var(--muted);display:none;}
+  body.show-answers .answerline{display:block;}
+  .answerline b{color:var(--ink);}
+
+  @media (max-width:560px){
+    .opts{grid-template-columns:repeat(2,1fr);}
+    .card{grid-template-columns:38px 1fr;}
+  }
+
+  footer{margin-top:34px;border-top:1px solid var(--line);padding-top:18px;font-size:13px;color:var(--muted);}
+  footer h3{font-family:"Bricolage Grotesque",sans-serif;font-size:14px;letter-spacing:.02em;color:var(--ink);margin:0 0 8px;text-transform:uppercase;}
+  footer li{margin-bottom:5px;}
+
+  @media print{
+    body{background:#fff;}
+    .controls{display:none;}
+    .card{border-color:#ccc;box-shadow:none;}
+    a{color:var(--ink) !important;}
+  }
+</style>
+</head>
+<body class="show-answers">
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Guess the age · 4 choices · winner takes bragging rights</div>
+    <h1>Age<span class="dot">imals</span></h1>
+    <p class="sub">Host sheet for Round 01. Show each animal's photo, read the four options aloud, and let everyone lock in a guess. Correct answers are marked in amber below — hide them before you print a player copy.</p>
+    <div class="meta">
+      <span><b>10</b> animals</span>
+      <span><b>Ages</b> as of July 2026</span>
+      <span><b>Difficulty</b> Easy · Tricky · Sneaky</span>
+    </div>
+    <p class="sub" style="margin-top:10px;"><a href="index.html" style="color:var(--teal);">← Back to the candidate pool</a></p>
+  </header>
+
+  <div class="controls">
+    <button class="toggle" id="toggleBtn">Hide answers</button>
+    <span class="toggle-note">Toggle before printing to make a player version.</span>
+  </div>
+
+  <!-- 1 -->
+  <div class="card tricky">
+    <div class="num">01</div>
+    <div class="head">
+      <span class="name">Punch</span>
+      <span class="species">Japanese macaque · Ichikawa City Zoo, Japan</span>
+      <span class="tag tricky">Tricky</span>
+    </div>
+    <div class="blurb">The snow monkey who went viral hauling around an oversized orangutan plushie. <a href="https://en.wikipedia.org/wiki/Punch_(monkey)" target="_blank">Photo &amp; birthdate →</a></div>
+    <div class="opts">
+      <div class="opt"><span class="ltr">A</span>3 months</div>
+      <div class="opt correct"><span class="ltr">B</span>11 months</div>
+      <div class="opt"><span class="ltr">C</span>2 years</div>
+      <div class="opt"><span class="ltr">D</span>4 years</div>
+    </div>
+    <div class="answerline"><b>Answer: B — ~11 months.</b> Born July 26, 2025.</div>
+  </div>
+
+  <!-- 2 -->
+  <div class="card easy">
+    <div class="num">02</div>
+    <div class="head">
+      <span class="name">Eugene</span>
+      <span class="species">Reticulated giraffe · Toledo Zoo</span>
+      <span class="tag easy">Easy</span>
+    </div>
+    <div class="blurb">Famous for the ridiculous tuft of hair sprouting from the top of his head. <a href="https://en.wikipedia.org/wiki/Eugene_(giraffe)" target="_blank">Photo &amp; birthdate →</a></div>
+    <div class="opts">
+      <div class="opt"><span class="ltr">A</span>3 weeks</div>
+      <div class="opt correct"><span class="ltr">B</span>6 months</div>
+      <div class="opt"><span class="ltr">C</span>1 year</div>
+      <div class="opt"><span class="ltr">D</span>2 years</div>
+    </div>
+    <div class="answerline"><b>Answer: B — 6 months.</b> Born January 17, 2026.</div>
+  </div>
+
+  <!-- 3 -->
+  <div class="card tricky">
+    <div class="num">03</div>
+    <div class="head">
+      <span class="name">Bluebell's calf</span>
+      <span class="species">Asian elephant · Fort Worth Zoo</span>
+      <span class="tag tricky">Tricky</span>
+    </div>
+    <div class="blurb">A 285-pound baby boy — standing within six minutes of birth. Big for a baby, so guesses run high. <a href="https://www.fortworthzoo.org/new-at-the-zoo/posts/our-elephant-herd-has-grown-again" target="_blank">Photo &amp; birthdate →</a></div>
+    <div class="opts">
+      <div class="opt"><span class="ltr">A</span>2 weeks</div>
+      <div class="opt correct"><span class="ltr">B</span>3 months</div>
+      <div class="opt"><span class="ltr">C</span>9 months</div>
+      <div class="opt"><span class="ltr">D</span>1.5 years</div>
+    </div>
+    <div class="answerline"><b>Answer: B — ~3 months.</b> Born April 1, 2026.</div>
+  </div>
+
+  <!-- 4 -->
+  <div class="card easy">
+    <div class="num">04</div>
+    <div class="head">
+      <span class="name">The Montana cubs</span>
+      <span class="species">Grizzly bears · Cheyenne Mountain Zoo</span>
+      <span class="tag easy">Easy</span>
+    </div>
+    <div class="blurb">Two orphans who arrived after a 10-hour drive, ~30 lbs each, with white fur rings around their necks. <a href="https://www.cmzoo.org/animals/new-babies/" target="_blank">Photo &amp; age →</a></div>
+    <div class="opts">
+      <div class="opt"><span class="ltr">A</span>6 weeks</div>
+      <div class="opt"><span class="ltr">B</span>4 months</div>
+      <div class="opt correct"><span class="ltr">C</span>6 months</div>
+      <div class="opt"><span class="ltr">D</span>14 months</div>
+    </div>
+    <div class="answerline"><b>Answer: C — ~6 months.</b> Age given on arrival, June 7, 2026.</div>
+  </div>
+
+  <!-- 5 -->
+  <div class="card tricky">
+    <div class="num">05</div>
+    <div class="head">
+      <span class="name">Gansu</span>
+      <span class="species">Red panda · Louisville Zoo</span>
+      <span class="tag tricky">Tricky</span>
+    </div>
+    <div class="blurb">A June birthday-bash star. Red pandas stay cute their whole lives, which makes age a real coin-flip. <a href="https://spectrumnews1.com/ky/louisville/news/2026/06/22/louisville-zoo-birthdays" target="_blank">Photo &amp; age →</a></div>
+    <div class="opts">
+      <div class="opt"><span class="ltr">A</span>4</div>
+      <div class="opt"><span class="ltr">B</span>8</div>
+      <div class="opt correct"><span class="ltr">C</span>13</div>
+      <div class="opt"><span class="ltr">D</span>19</div>
+    </div>
+    <div class="answerline"><b>Answer: C — 13 years.</b></div>
+  </div>
+
+  <!-- 6 -->
+  <div class="card tricky">
+    <div class="num">06</div>
+    <div class="head">
+      <span class="name">Roxanne</span>
+      <span class="species">Saharan addax · Louisville Zoo</span>
+      <span class="tag tricky">Tricky</span>
+    </div>
+    <div class="blurb">Holds the title of oldest Saharan addax in the entire Association of Zoos &amp; Aquariums population. <a href="https://louisvillezoo.org/party-with-the-animals-mayor-greenberg-and-the-louisville-zoo-invite-you-to-celebrate-the-june-birthday-bashmedia-release/" target="_blank">Photo &amp; age →</a></div>
+    <div class="opts">
+      <div class="opt"><span class="ltr">A</span>9</div>
+      <div class="opt"><span class="ltr">B</span>16</div>
+      <div class="opt correct"><span class="ltr">C</span>23</div>
+      <div class="opt"><span class="ltr">D</span>31</div>
+    </div>
+    <div class="answerline"><b>Answer: C — 23 years.</b></div>
+  </div>
+
+  <!-- 7 -->
+  <div class="card sneaky">
+    <div class="num">07</div>
+    <div class="head">
+      <span class="name">Bubbles</span>
+      <span class="species">Chimpanzee · Zoo Miami</span>
+      <span class="tag sneaky">Sneaky</span>
+    </div>
+    <div class="blurb">The oldest chimpanzee under human care in North America — staff call her an "extreme senior citizen." <a href="https://www.aol.com/articles/zoo-miami-grand-dames-celebrate-153201259.html" target="_blank">Photo &amp; age →</a></div>
+    <div class="opts">
+      <div class="opt"><span class="ltr">A</span>41</div>
+      <div class="opt"><span class="ltr">B</span>52</div>
+      <div class="opt correct"><span class="ltr">C</span>63</div>
+      <div class="opt"><span class="ltr">D</span>74</div>
+    </div>
+    <div class="answerline"><b>Answer: C — 63 years.</b> Turned 63 on Feb 5, 2026 (chimps rarely pass 50).</div>
+  </div>
+
+  <!-- 8 -->
+  <div class="card sneaky">
+    <div class="num">08</div>
+    <div class="head">
+      <span class="name">Fatou</span>
+      <span class="species">Western lowland gorilla · Berlin Zoo</span>
+      <span class="tag sneaky">Sneaky</span>
+    </div>
+    <div class="blurb">Guinness-certified oldest living gorilla in the world. Celebrated with soft veggies instead of cake. <a href="https://www.discovermagazine.com/world-s-oldest-gorilla-turns-69-what-lady-fatou-reveals-about-animal-longevity-48963" target="_blank">Photo &amp; age →</a></div>
+    <div class="opts">
+      <div class="opt"><span class="ltr">A</span>48</div>
+      <div class="opt"><span class="ltr">B</span>57</div>
+      <div class="opt correct"><span class="ltr">C</span>69</div>
+      <div class="opt"><span class="ltr">D</span>82</div>
+    </div>
+    <div class="answerline"><b>Answer: C — 69 years.</b> Birthday celebrated April 13, 2026.</div>
+  </div>
+
+  <!-- 9 -->
+  <div class="card sneaky">
+    <div class="num">09</div>
+    <div class="head">
+      <span class="name">Elvis</span>
+      <span class="species">Spider monkey · Zoo Boise</span>
+      <span class="tag sneaky">Sneaky</span>
+    </div>
+    <div class="blurb">Believed to be the world's oldest spider monkey — a species that usually lives just 25 to 45 years. <a href="https://www.deseret.com/u-s-world/2026/04/13/worlds-oldest-gorilla-in-captivity-celebrates-69th-birthday/" target="_blank">Age reference →</a></div>
+    <div class="opts">
+      <div class="opt"><span class="ltr">A</span>22</div>
+      <div class="opt"><span class="ltr">B</span>34</div>
+      <div class="opt"><span class="ltr">C</span>47</div>
+      <div class="opt correct"><span class="ltr">D</span>~63</div>
+    </div>
+    <div class="answerline"><b>Answer: D — ~63 years.</b> Believed born 1962. Way past the normal ceiling — the trap answer is C.</div>
+  </div>
+
+  <!-- 10 -->
+  <div class="card sneaky">
+    <div class="num">10</div>
+    <div class="head">
+      <span class="name">Jonathan</span>
+      <span class="species">Seychelles giant tortoise · St. Helena</span>
+      <span class="tag sneaky">Sneaky</span>
+    </div>
+    <div class="blurb">Guinness's oldest living land animal, ever. Whatever your friends guess, it's not enough. <a href="https://www.deseret.com/u-s-world/2026/04/13/worlds-oldest-gorilla-in-captivity-celebrates-69th-birthday/" target="_blank">Age reference →</a></div>
+    <div class="opts">
+      <div class="opt"><span class="ltr">A</span>88</div>
+      <div class="opt"><span class="ltr">B</span>141</div>
+      <div class="opt correct"><span class="ltr">C</span>~193</div>
+      <div class="opt"><span class="ltr">D</span>260</div>
+    </div>
+    <div class="answerline"><b>Answer: C — ~193 years.</b> Brought to St. Helena in 1882, already ~50 then.</div>
+  </div>
+
+  <footer>
+    <h3>Host tips</h3>
+    <ul>
+      <li>Grab each photo straight from the linked source and crop out captions/watermarks so nobody can reverse-image-search mid-round.</li>
+      <li>Front-load the easy babies, then build to the sneaky old-timers (7–10) for a strong finish.</li>
+      <li>The classic trap: an animal that <em>looks</em> young but is ancient (Elvis, Fatou). Award a bonus point for anyone who resists the obvious "middle" answer.</li>
+      <li>Ages drift over time — re-verify at the source before a future game night, especially the babies.</li>
+    </ul>
+  </footer>
+
+</div>
+
+<script>
+  const btn = document.getElementById('toggleBtn');
+  btn.addEventListener('click', () => {
+    const on = document.body.classList.toggle('show-answers');
+    btn.textContent = on ? 'Hide answers' : 'Show answers';
+  });
+</script>
+</body>
+</html>
